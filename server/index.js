@@ -6,7 +6,11 @@ import {
   registerValidation,
   clientValidation,
 } from "./validations.js";
-import { UserController, ClientController } from "./controllers.js";
+import {
+  UserController,
+  ClientController,
+  ProviderController,
+} from "./controllers.js";
 import { checkAuth, handleValidationErrors } from "./utils.js";
 
 const app = express();
@@ -59,6 +63,16 @@ app.patch(
   checkAuth,
   handleValidationErrors,
   ClientController.updateClient
+);
+
+app.get("/providers", checkAuth, ProviderController.getAllProviders);
+app.get("/clients/:name", checkAuth, ProviderController.getOneProvider);
+app.delete("/clients/:id", checkAuth, ProviderController.removeProvider);
+app.patch(
+  "/clients/:id",
+  checkAuth,
+  handleValidationErrors,
+  ProviderController.updateProvider
 );
 // app.patch(
 //   '/posts/:id',
