@@ -11,18 +11,6 @@ export const addPriceList = async (req, res) => {
         message: "Не удалось внести данные о прейскуранте. Товар не найден",
       });
 
-    // //работу с датами потом исправить, временно костыльный метод
-    // tmpDT = dtBeginPrice.split(".");
-    // if (tmpDT.length != 3)
-    //   return res.status(500).json({
-    //     message: "Не удалось внести данные о прейскуранте. Неверная дата1",
-    //   });
-    // dtBeginPrice = new Date(tmpDT[2] + tmpDT[1] + tmpDT[0]);
-    // if (!dtBeginPrice.isDate())
-    //   return res.status(500).json({
-    //     message: "Не удалось внести данные о прейскуранте. Неверная дата2",
-    //   });
-    // const dtBeginPrice = new Date(req.body.dtBeginPrice);
     const doc = new PriceListSchema({
       counter: req.body.counter,
       product: productId,
@@ -56,9 +44,11 @@ export const getAllPriceLists = async (req, res) => {
 
 export const getOnePriceList = async (req, res) => {
   try {
-    const priceListCounter = await PriceListSchema.findOne({
-      name: req.params.name,
-    }).populate("product");
+    const priceListCounter = await PriceListSchema.find({
+      counter: req.params.counter,
+    })
+      .populate("product")
+      .exec();
 
     if (!priceListCounter) {
       return res.status(404).json({
@@ -144,3 +134,23 @@ export const updatePriceList = async (req, res) => {
     });
   }
 };
+
+
+// получить актуальную цену
+// export const getActualDate = async (req, res) => {
+//   try {
+//     const data = new Date("2022-12-24")
+//     const priceLists = await PriceListSchema.find().sort({ dtBeginPrice: 1 });
+//     let result;
+//     for (let i in priceLists){
+//       if (i > 0 && priceLists[i].dtBeginPrice > data && priceLists[i].product == "63ab37f4fc54e542243f069a")
+//         result = priceLists[i-1];
+//     }
+//     res.json(result);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({
+//       message: "Не удалось получить данные о прейскурантах",
+//     });
+//   }
+// };

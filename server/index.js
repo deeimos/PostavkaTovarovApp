@@ -8,6 +8,8 @@ import {
   providerValidation,
   productValidation,
   priceListValidation,
+  orderValidation,
+  compositionOrderValidation
 } from "./validations.js";
 import {
   UserController,
@@ -15,6 +17,8 @@ import {
   ProviderController,
   ProductController,
   PriceListController,
+  OrderController,
+  CompositionOrderController
 } from "./controllers.js";
 import { checkAuth, handleValidationErrors } from "./utils.js";
 
@@ -127,4 +131,41 @@ app.patch(
   priceListValidation,
   handleValidationErrors,
   PriceListController.updatePriceList
+);
+
+
+app.post(
+    "/orders",
+    checkAuth,
+    orderValidation,
+    handleValidationErrors,
+    OrderController.addOrder
+  );
+app.get("/orders", checkAuth, OrderController.getAllOrders);
+app.get("/orders/:counter", checkAuth, OrderController.getOneOrder);
+app.delete("/orders/:id", checkAuth, OrderController.removeOrder);
+app.patch(
+  "/orders/:id",
+  checkAuth,
+  orderValidation,
+  handleValidationErrors,
+  OrderController.updateOrder
+);
+
+app.post(
+    "/compositionorders",
+    checkAuth,
+    compositionOrderValidation,
+    handleValidationErrors,
+    CompositionOrderController.addCompositionOrder
+  );
+app.get("/compositionorders", checkAuth, CompositionOrderController.getAllCompositionOrders);
+app.get("/compositionorders/:orderId", checkAuth,  CompositionOrderController.getOneCompositionOrder);
+app.delete("/compositionorders/:id", checkAuth,  CompositionOrderController.removeCompositionOrder);
+app.patch(
+  "/compositionorders/:id",
+  checkAuth,
+  compositionOrderValidation,
+  handleValidationErrors,
+  CompositionOrderController.updateCompositionOrder
 );

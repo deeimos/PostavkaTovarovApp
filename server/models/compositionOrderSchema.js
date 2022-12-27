@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const CompositionOrderSchema = new mongoose.Schema(
   {
-    contract: {
+    order: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Contract",
+      ref: "Order",
       required: true,
     },
     product: {

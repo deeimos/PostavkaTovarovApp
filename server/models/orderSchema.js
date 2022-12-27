@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ContractSchema = new mongoose.Schema(
+const OrderSchema = new mongoose.Schema(
   {
     counter: {
       type: Number,
@@ -18,17 +18,20 @@ const ContractSchema = new mongoose.Schema(
       required: true,
     },
     dtContract: {
-      type: Date(),
+      type: Date,
       required: true,
     },
     dtSending: {
-        type: Date(),
+        type: Date,
       //   required: true,
       },
+    sum:{
+      type: Number,
+    }
   },
   {
     timestamps: true,
   }
 );
 
-export default mongoose.model("Contract", OrderSchema);
+export default mongoose.model("Order", OrderSchema);
