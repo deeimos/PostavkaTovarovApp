@@ -5,11 +5,16 @@ import {
   loginValidation,
   registerValidation,
   clientValidation,
+  providerValidation,
+  productValidation,
+  priceListValidation,
 } from "./validations.js";
 import {
   UserController,
   ClientController,
   ProviderController,
+  ProductController,
+  PriceListController,
 } from "./controllers.js";
 import { checkAuth, handleValidationErrors } from "./utils.js";
 
@@ -48,6 +53,7 @@ app.post(
 );
 app.get("/auth/me", checkAuth, UserController.getMe);
 
+
 app.post(
   "/clients",
   checkAuth,
@@ -61,37 +67,64 @@ app.delete("/clients/:id", checkAuth, ClientController.removeClient);
 app.patch(
   "/clients/:id",
   checkAuth,
+  clientValidation,
   handleValidationErrors,
   ClientController.updateClient
 );
 
-app.get("/providers", checkAuth, ProviderController.getAllProviders);
-app.get("/clients/:name", checkAuth, ProviderController.getOneProvider);
-app.delete("/clients/:id", checkAuth, ProviderController.removeProvider);
-app.patch(
-  "/clients/:id",
+
+app.post(
+  "/providers",
   checkAuth,
+  providerValidation,
+  handleValidationErrors,
+  ProviderController.addProvider
+);
+app.get("/providers", checkAuth, ProviderController.getAllProviders);
+app.get("/providers/:name", checkAuth, ProviderController.getOneProvider);
+app.delete("/providers/:id", checkAuth, ProviderController.removeProvider);
+app.patch(
+  "/providers/:id",
+  checkAuth,
+  providerValidation,
   handleValidationErrors,
   ProviderController.updateProvider
 );
-// app.patch(
-//   '/posts/:id',
-//   checkAuth,
-//   postCreateValidation,
-//   handleValidationErrors,
-//   PostController.update,
-// );
 
-// Для всех моделей сделать CRUD
-// app.get('/posts', PostController.getAll);
-// app.get('/posts/tags', PostController.getLastTags);
-// app.get('/posts/:id', PostController.getOne);
-// app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
-// app.delete('/posts/:id', checkAuth, PostController.remove);
-// app.patch(
-//   '/posts/:id',
-//   checkAuth,
-//   postCreateValidation,
-//   handleValidationErrors,
-//   PostController.update,
-// );
+
+app.post(
+  "/products",
+  checkAuth,
+  productValidation,
+  handleValidationErrors,
+  ProductController.addProduct
+);
+app.get("/products", checkAuth, ProductController.getAllProducts);
+app.get("/products/:name", checkAuth, ProductController.getOneProduct);
+app.delete("/products/:id", checkAuth, ProductController.removeProduct);
+app.patch(
+  "/products/:id",
+  checkAuth,
+  productValidation,
+  handleValidationErrors,
+  ProductController.updateProduct
+);
+
+
+app.post(
+    "/pricelists",
+    checkAuth,
+    priceListValidation,
+    handleValidationErrors,
+    PriceListController.addPriceList
+  );
+app.get("/pricelists", checkAuth, PriceListController.getAllPriceLists);
+app.get("/pricelists/:counter", checkAuth, PriceListController.getOnePriceList);
+app.delete("/pricelists/:id", checkAuth, PriceListController.removePriceList);
+app.patch(
+  "/pricelists/:id",
+  checkAuth,
+  priceListValidation,
+  handleValidationErrors,
+  PriceListController.updatePriceList
+);

@@ -1,7 +1,7 @@
 export * as UserController from "./controllers/UserController.js";
 export * as ClientController from "./controllers/ClientController.js";
-// export * OrderController as from "./OrderController.js";
-// export * CompositionOrderController as from "./CompositionOrderController.js";
-// export * PriceListController as from "./PriceListController.js";
-// export * ProductController as from "./ProductController.js";
+// export * as OrderController from "./controllers/OrderController.js";
+// export * as CompositionOrderController from "./controllers/CompositionOrderController.js";
+export * as PriceListController from "./controllers/PriceListController.js";
+export * as ProductController from "./controllers/ProductController.js";
 export * as ProviderController from "./controllers/ProviderController.js"

@@ -5,7 +5,6 @@ const PriceListSchema = new mongoose.Schema(
     counter: {
       type: Number,
       required: true,
-      unique: true,
     },
     product: {
       type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +16,7 @@ const PriceListSchema = new mongoose.Schema(
       required: true,
     },
     dtBeginPrice: {
-      type: Date(),
+      type: Date,
       required: true,
     },
   },

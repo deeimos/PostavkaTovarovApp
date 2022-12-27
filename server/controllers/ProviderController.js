@@ -64,13 +64,13 @@ export const removeProvider = async (req, res) => {
         if (err) {
           console.log(err);
           return res.status(500).json({
-            message: "Не удалось удалить данные о клиенте",
+            message: "Не удалось удалить данные о поставщике",
           });
         }
 
         if (!doc) {
           return res.status(404).json({
-            message: "Клиент не найден",
+            message: "Поставщик не найден",
           });
         }
 
@@ -82,7 +82,7 @@ export const removeProvider = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Не удалось получить данные о клиентах",
+      message: "Не удалось получить данные о поставщиках",
     });
   }
 };
@@ -109,7 +109,7 @@ export const updateProvider = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Не удалось обновить данные клиента",
+      message: "Не удалось обновить данные поставщика",
     });
   }
 };
