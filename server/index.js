@@ -1,9 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
 
-import { loginValidation, registerValidation } from "./validations/auth.js";
-import checkAuth from "./utils/checkAuth.js";
-import * as UserController from "./controllers/UserController.js";
+import {
+  loginValidation,
+  registerValidation,
+  clientValidation,
+} from "./validations.js";
+import { UserController, ClientController } from "./controllers.js";
+import { checkAuth, handleValidationErrors } from "./utils.js";
 
 const app = express();
 app.use(express.json());
@@ -26,9 +30,43 @@ app.get("/", (req, res) => {
   res.send("Hello World!!!");
 });
 
-app.post("/register", registerValidation, UserController.register);
-app.post("/auth", loginValidation, UserController.login);
+app.post(
+  "/register",
+  registerValidation,
+  handleValidationErrors,
+  UserController.register
+);
+app.post(
+  "/auth",
+  loginValidation,
+  handleValidationErrors,
+  UserController.login
+);
 app.get("/auth/me", checkAuth, UserController.getMe);
+
+app.post(
+  "/clients",
+  checkAuth,
+  clientValidation,
+  handleValidationErrors,
+  ClientController.addClient
+);
+app.get("/clients", checkAuth, ClientController.getAllClients);
+app.get("/clients/:name", checkAuth, ClientController.getOneClient);
+app.delete("/clients/:id", checkAuth, ClientController.removeClient);
+app.patch(
+  "/clients/:id",
+  checkAuth,
+  handleValidationErrors,
+  ClientController.updateClient
+);
+// app.patch(
+//   '/posts/:id',
+//   checkAuth,
+//   postCreateValidation,
+//   handleValidationErrors,
+//   PostController.update,
+// );
 
 // Для всех моделей сделать CRUD
 // app.get('/posts', PostController.getAll);

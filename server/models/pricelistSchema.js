@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const PriceListSchema = new mongoose.Schema(
   {
-    couneter: {
+    counter: {
       type: Number,
       required: true,
       unique: true,

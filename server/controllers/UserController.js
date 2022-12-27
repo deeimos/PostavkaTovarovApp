@@ -1,13 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { validationResult } from "express-validator";
 import UserSchema from "../models/UserSchema.js";
 
 export const register = async (req, res) => {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json(errors.array());
-
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
@@ -26,12 +22,13 @@ export const register = async (req, res) => {
       },
       "postavkaTovarov",
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
     const { passwordHash, ...userData } = user._doc;
     res.json({ ...userData, token });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Не удалось зарегестрировать пользователя",
     });
@@ -59,12 +56,13 @@ export const login = async (req, res) => {
       },
       "postavkaTovarov",
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
     const { passwordHash, ...userData } = user._doc;
     res.json({ ...userData, token });
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: "Не удалось авторизироваться",
     });
