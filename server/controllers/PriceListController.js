@@ -134,23 +134,3 @@ export const updatePriceList = async (req, res) => {
     });
   }
 };
-
-
-// получить актуальную цену
-// export const getActualDate = async (req, res) => {
-//   try {
-//     const data = new Date("2022-12-24")
-//     const priceLists = await PriceListSchema.find().sort({ dtBeginPrice: 1 });
-//     let result;
-//     for (let i in priceLists){
-//       if (i > 0 && priceLists[i].dtBeginPrice > data && priceLists[i].product == "63ab37f4fc54e542243f069a")
-//         result = priceLists[i-1];
-//     }
-//     res.json(result);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({
-//       message: "Не удалось получить данные о прейскурантах",
-//     });
-//   }
-// };

@@ -1,6 +1,26 @@
 import OrderSchema from "../models/orderSchema.js";
 import ProductSchema from "../models/productSchema.js";
 import CompositionOrderSchema from "../models/compositionOrderSchema.js";
+import PriceListSchema from "../models/priceListSchema.js";
+
+// получить актуальную цену
+// export const getActualDate = async (req, res) => {
+//   try {
+//     const data = new Date("2022-12-24")
+//     const priceLists = await PriceListSchema.find().sort({ dtBeginPrice: 1 });
+//     let result;
+//     for (let i in priceLists){
+//       if (i > 0 && priceLists[i].dtBeginPrice > data && priceLists[i].product == "63ab37f4fc54e542243f069a")
+//         result = priceLists[i-1];
+//     }
+//     res.json(result);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({
+//       message: "Не удалось получить данные о прейскурантах",
+//     });
+//   }
+// };
 
 export const addCompositionOrder = async (req, res) => {
   try {
@@ -10,14 +30,25 @@ export const addCompositionOrder = async (req, res) => {
     const productId = await ProductSchema.findOne({
       name: req.body.product,
     });
-    if (!orderId || !productId)
+
+    const priceLists = await PriceListSchema.find().sort({ dtBeginPrice: 1 });
+    if (!orderId || !productId || !priceLists)
       return res.status(500).json({
         message: "Не удалось внести данные о составе заказа",
       });
 
+    let result;
+    for (let i in priceLists) {
+      if (String(priceLists[i].product._id) === String(productId._id)) {
+        if (Number(priceLists[i].dtBeginPrice) < Number(orderId.dtContract))
+          result = Number(priceLists[i].price);
+      }
+    }
+
     const doc = new CompositionOrderSchema({
       order: orderId,
       product: productId,
+      price: result,
       count: req.body.count,
     });
 
@@ -130,7 +161,6 @@ export const updateCompositionOrder = async (req, res) => {
         count: req.body.count,
       }
     );
-
     res.json({
       success: true,
     });
